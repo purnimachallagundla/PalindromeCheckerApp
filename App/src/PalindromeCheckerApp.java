@@ -1,63 +1,25 @@
-class UseCase8PalindromeCheckerApp {
-    static class Node {
-        char data;
-        Node next;
+class UseCase9PalindromeCheckerApp {
 
-        Node(char data) {
-            this.data = data;
-            this.next = null;
+    static boolean isPalindrome(String text, int start, int end) {
+
+        if (start >= end) {
+            return true;
         }
+
+        if (text.charAt(start) != text.charAt(end)) {
+            return false;
+        }
+
+        return isPalindrome(text, start + 1, end - 1);
     }
 
     public static void main(String[] args) {
 
-        String text = "banana";
-        Node head = null, tail = null;
+        String text = "solos";
 
-        for (int i = 0; i < text.length(); i++) {
-            Node newNode = new Node(text.charAt(i));
+        boolean result = isPalindrome(text, 0, text.length() - 1);
 
-            if (head == null) {
-                head = tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-
-        Node slow = head;
-        Node fast = head;
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        Node prev = null;
-        Node current = slow;
-
-        while (current != null) {
-            Node next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-
-        Node firstHalf = head;
-        Node secondHalf = prev;
-
-        boolean isPalindrome = true;
-
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) {
-                isPalindrome = false;
-                break;
-            }
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
-        }
-
-        if (isPalindrome) {
+        if (result) {
             System.out.println("The given string \"" + text + "\" is a Palindrome.");
         } else {
             System.out.println("The given string \"" + text + "\" is NOT a Palindrome.");
