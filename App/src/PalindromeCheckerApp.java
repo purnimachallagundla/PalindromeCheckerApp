@@ -1,38 +1,66 @@
-import java.util.Deque;
-import java.util.ArrayDeque;
+class UseCase8PalindromeCheckerApp {
+    static class Node {
+        char data;
+        Node next;
 
-class UseCase7PalindromeCheckerApp {
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
     public static void main(String[] args) {
 
-        // Define the input string
-        String input = "refer";
+        String text = "banana";
+        Node head = null, tail = null;
 
-        // Create a Deque to store characters
-        Deque<Character> deque = new ArrayDeque<>();
+        for (int i = 0; i < text.length(); i++) {
+            Node newNode = new Node(text.charAt(i));
 
-        // Add each character to the deque
-        for (char c : input.toCharArray()) {
-            deque.add(c);
-        }
-
-        // Flag to track palindrome result
-        boolean isPalindrome = true;
-
-        // Continue comparison while more than one element exists
-        while (deque.size() > 1) {
-
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
-
-            if (front != rear) {
-                isPalindrome = false;
-                break;
+            if (head == null) {
+                head = tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
             }
         }
 
-        // Display result
-        System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        Node prev = null;
+        Node current = slow;
+
+        while (current != null) {
+            Node next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        Node firstHalf = head;
+        Node secondHalf = prev;
+
+        boolean isPalindrome = true;
+
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) {
+                isPalindrome = false;
+                break;
+            }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        if (isPalindrome) {
+            System.out.println("The given string \"" + text + "\" is a Palindrome.");
+        } else {
+            System.out.println("The given string \"" + text + "\" is NOT a Palindrome.");
+        }
     }
 }
