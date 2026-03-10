@@ -1,34 +1,42 @@
 import java.util.Scanner;
 
-class UseCase10PalindromeCheckerApp {
+class PalindromeChecker {
 
-    public static void main(String[] args) {
+    public boolean checkPalindrome(String input) {
 
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter a string: ");
-        String input = sc.nextLine();
-
-        input = input.toLowerCase();
-
-        input = input.replaceAll("\\s+", "");
-
-        boolean isPalindrome = true;
+        char[] arr = input.toCharArray();
 
         int left = 0;
-        int right = input.length() - 1;
+        int right = arr.length - 1;
 
         while (left < right) {
-            if (input.charAt(left) != input.charAt(right)) {
-                isPalindrome = false;
-                break;
+            if (arr[left] != arr[right]) {
+                return false;
             }
             left++;
             right--;
         }
 
-        if (isPalindrome) {
-            System.out.println("Result: It is a palindrome (ignoring spaces and case).");
+        return true;
+    }
+}
+
+class UseCase11PalindromeCheckerApp {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("=== UC11: Object-Oriented Palindrome Service ===");
+        System.out.print("Enter a string: ");
+        String input = sc.nextLine();
+
+        PalindromeChecker checker = new PalindromeChecker();
+
+        boolean result = checker.checkPalindrome(input);
+
+        if (result) {
+            System.out.println("Result: It is a palindrome.");
         } else {
             System.out.println("Result: It is NOT a palindrome.");
         }
