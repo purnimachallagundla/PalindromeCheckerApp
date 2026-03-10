@@ -1,28 +1,38 @@
-class UseCase9PalindromeCheckerApp {
+import java.util.Scanner;
 
-    static boolean isPalindrome(String text, int start, int end) {
-
-        if (start >= end) {
-            return true;
-        }
-
-        if (text.charAt(start) != text.charAt(end)) {
-            return false;
-        }
-
-        return isPalindrome(text, start + 1, end - 1);
-    }
+class UseCase10PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        String text = "solos";
+        Scanner sc = new Scanner(System.in);
 
-        boolean result = isPalindrome(text, 0, text.length() - 1);
+        System.out.print("Enter a string: ");
+        String input = sc.nextLine();
 
-        if (result) {
-            System.out.println("The given string \"" + text + "\" is a Palindrome.");
-        } else {
-            System.out.println("The given string \"" + text + "\" is NOT a Palindrome.");
+        input = input.toLowerCase();
+
+        input = input.replaceAll("\\s+", "");
+
+        boolean isPalindrome = true;
+
+        int left = 0;
+        int right = input.length() - 1;
+
+        while (left < right) {
+            if (input.charAt(left) != input.charAt(right)) {
+                isPalindrome = false;
+                break;
+            }
+            left++;
+            right--;
         }
+
+        if (isPalindrome) {
+            System.out.println("Result: It is a palindrome (ignoring spaces and case).");
+        } else {
+            System.out.println("Result: It is NOT a palindrome.");
+        }
+
+        sc.close();
     }
 }
