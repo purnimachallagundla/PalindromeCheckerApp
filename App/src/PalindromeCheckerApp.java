@@ -1,10 +1,24 @@
 import java.util.*;
 
-interface PalindromeStrategy {
-    boolean check(String input);
+class TwoPointerPalindromeUC13 {
+
+    public boolean check(String input) {
+
+        int left = 0;
+        int right = input.length() - 1;
+
+        while (left < right) {
+            if (input.charAt(left) != input.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
 }
 
-class StackStrategy implements PalindromeStrategy {
+class StackPalindromeUC13 {
 
     public boolean check(String input) {
 
@@ -24,75 +38,48 @@ class StackStrategy implements PalindromeStrategy {
     }
 }
 
-class DequeStrategy implements PalindromeStrategy {
+class ReverseStringPalindromeUC13 {
 
     public boolean check(String input) {
 
-        Deque<Character> deque = new ArrayDeque<>();
-
-        for (char ch : input.toCharArray()) {
-            deque.addLast(ch);
-        }
-
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
-                return false;
-            }
-        }
-
-        return true;
+        String reversed = new StringBuilder(input).reverse().toString();
+        return input.equals(reversed);
     }
 }
 
-class PalindromeContext  {
-
-    private PalindromeStrategy strategy;
-
-    // Inject strategy at runtime
-    public PalindromeContext (PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean checkPalindrome(String input) {
-        return strategy.check(input);
-    }
-}
-
-// Main Application Class
-class UseCase12PalindromeCheckerApp {
+class UseCase13PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("=== UC12: Strategy Pattern for Palindrome Algorithms ===");
+        System.out.println("=== UC13: Performance Comparison of Palindrome Algorithms ===");
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        System.out.println("Choose Strategy:");
-        System.out.println("1. Stack Strategy");
-        System.out.println("2. Deque Strategy");
-        System.out.print("Enter choice (1 or 2): ");
+        TwoPointerPalindromeUC13 algo1 = new TwoPointerPalindromeUC13();
+        StackPalindromeUC13 algo2 = new StackPalindromeUC13();
+        ReverseStringPalindromeUC13 algo3 = new ReverseStringPalindromeUC13();
 
-        int choice = sc.nextInt();
+        long start1 = System.nanoTime();
+        boolean result1 = algo1.check(input);
+        long end1 = System.nanoTime();
+        long time1 = end1 - start1;
 
-        PalindromeStrategy strategy;
+        long start2 = System.nanoTime();
+        boolean result2 = algo2.check(input);
+        long end2 = System.nanoTime();
+        long time2 = end2 - start2;
 
-        if (choice == 1) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
-        }
+        long start3 = System.nanoTime();
+        boolean result3 = algo3.check(input);
+        long end3 = System.nanoTime();
+        long time3 = end3 - start3;
 
-        PalindromeContext context = new PalindromeContext(strategy);
-
-        boolean result = context.checkPalindrome(input);
-
-        if (result) {
-            System.out.println("Result: It is a palindrome.");
-        } else {
-            System.out.println("Result: It is NOT a palindrome.");
-        }
+        System.out.println("\n--- Results ---");
+        System.out.println("Two Pointer Result: " + result1 + " | Time: " + time1 + " ns");
+        System.out.println("Stack Result: " + result2 + " | Time: " + time2 + " ns");
+        System.out.println("Reverse Result: " + result3 + " | Time: " + time3 + " ns");
 
         sc.close();
     }
